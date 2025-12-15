@@ -72,6 +72,7 @@ VS Code
 
 Uvicorn (ASGI server)
 
+
 📂 Project Structure
 Resume-parser-ai/
 │
@@ -93,6 +94,7 @@ Resume-parser-ai/
 ├── README.md
 └── .gitignore
 
+
 ⚙️ How It Works (Flow)
 
 User uploads a resume (PDF / DOCX)
@@ -110,6 +112,7 @@ Skills & relevance are analyzed
 AI score is generated
 
 Results are displayed on the UI
+
 
 🚀 Getting Started
 1️⃣ Clone the Repository
@@ -142,6 +145,7 @@ Open in browser:
 
 http://127.0.0.1:5500
 
+
 📊 Supported Job Roles
 
 Cloud Engineer
@@ -149,6 +153,7 @@ Cloud Engineer
 Data Analyst
 
 Each role has predefined skill sets used during scoring.
+
 
 📈 Sample Output
 
@@ -159,6 +164,7 @@ Job Role
 Required Skills
 
 Resume Preview (first 1200 characters)
+
 
 🔒 Security & Best Practices
 
@@ -171,6 +177,7 @@ No use of eval
 File cleanup after processing
 
 Input validation on backend
+
 
 🌱 Future Enhancements
 
@@ -199,10 +206,4 @@ Practical NLP implementation
 
 Full-stack development skills
 
-Perfect for:
 
-Entry-level Cloud / Data roles
-
-AI / ML learning portfolios
-
-Interview demonstrations
