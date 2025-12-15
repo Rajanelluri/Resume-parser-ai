@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume Parser AI</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <main class="container">
+
+    <!-- HEADER -->
+    <header class="header">
+      <h1>Resume Parser AI</h1>
+      <p class="subtitle">
+        Upload a resume and job description to get an AI-powered match score.
+      </p>
+    </header>
+
+    <!-- FORM CARD -->
+    <section class="card">
+      <h2 class="card-title">Analyze Resume</h2>
+
+      <form id="resume-form" autocomplete="off" novalidate>
+
+        <!-- Resume Upload -->
+        <div class="field">
+          <label for="resume-file">Resume (PDF / DOCX)</label>
+          <input
+            id="resume-file"
+            name="resume-file"
+            type="file"
+            accept=".pdf,.docx"
+            required
+          />
+          <div class="help">Accepted formats: PDF, DOCX</div>
+        </div>
+
+        <!-- Job Role -->
+        <div class="field">
+          <label for="job-role">Job Role</label>
+          <select
+            id="job-role"
+            name="job-role"
+            required
+            aria-label="Job Role"
+          >
+            <option value="cloud_engineer">Cloud Engineer</option>
+            <option value="data_analyst">Data Analyst</option>
+          </select>
+        </div>
+
+        <!-- Job Description -->
+        <div class="field">
+          <label for="job-desc">Job Description</label>
+          <textarea
+            id="job-desc"
+            name="job-desc"
+            rows="10"
+            placeholder="Paste the job description here..."
+            required
+          ></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+          <!-- IMPORTANT: type=button prevents page reload -->
+          <button id="analyze-btn" type="button">
+            Analyze
+          </button>
+
+          <span id="status" class="badge">Ready</span>
+        </div>
+      </form>
+    </section>
+
+    <!-- RESULT CARD -->
+    <section class="card">
+      <h2 class="card-title">Result</h2>
+
+      <div id="result">
+        <div class="kpis">
+
+          <div class="kpi">
+            <div class="label">Score</div>
+            <div id="score" class="value">-- / 10</div>
+          </div>
+
+          <div class="kpi">
+            <div class="label">Job Role</div>
+            <div id="roleOut" class="value">--</div>
+          </div>
+
+          <div class="kpi">
+            <div class="label">Required Skills</div>
+            <div id="skills" class="value">--</div>
+          </div>
+
+        </div>
+
+        <div class="field">
+          <label>Resume Preview</label>
+          <pre id="preview">--</pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JavaScript -->
+  <script src="./main.js"></script>
+</body>
+</html>

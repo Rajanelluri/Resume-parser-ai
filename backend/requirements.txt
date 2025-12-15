@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+nltk
+scikit-learn
+pdfplumber
+python-docx
+textract
+gensim
