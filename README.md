@@ -145,6 +145,11 @@ Open in browser:
 
 http://127.0.0.1:5500
 
+Output images:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/438d2e82-945c-4a3a-b579-7084259a63b9" />
+Result:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/fb300f60-b963-4df7-a9f1-de1b265a480f" />
+
 
 📊 Supported Job Roles
 
