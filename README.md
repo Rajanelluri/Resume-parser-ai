@@ -212,3 +212,13 @@ Practical NLP implementation
 Full-stack development skills
 
 
+Adding features like chatbot(not fully implemented right now working on it):
+chatbot is a great upgrade. You can make it answer user questions like:
+“Why is my ATS score low?”
+“Which skills are missing for Cloud Engineer?”
+“What should I add to improve my resume for this job description?”
+“Give me 5 bullet points for my experience”
+“Suggest keywords for my LinkedIn”
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b539f34e-5940-4c26-9da5-b08d3fefb67c" />
+
+
