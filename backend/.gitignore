@@ -1,0 +1,9 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+backend/uploads/
+.env
+pip
+Thumbs.db
+.DS_Store
