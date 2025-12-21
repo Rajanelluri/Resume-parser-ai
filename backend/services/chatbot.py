@@ -40,7 +40,7 @@ Instructions:
 
 
 def ollama_answer(prompt: str) -> str:
-    print("🔥 ollama_answer() is running")
+    print(" ollama_answer() is running")
     payload = {
         "model": MODEL_NAME,
         "prompt": prompt,
