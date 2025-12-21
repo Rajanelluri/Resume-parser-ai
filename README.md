@@ -25,7 +25,7 @@ Frontend (HTML/CSS/JS)
 
 🛠 Setup Instructions
 1. Clone the repo
-git clone https://github.com/your-username/resume-parser-ai.git
+git clone https://github.com/Rajanelluri/Resume-parser-ai
 cd resume-parser-ai
 
 
