@@ -1,47 +1,69 @@
 console.log("✅ main.js loaded");
 
-const API_URL = "http://127.0.0.1:8000/upload-resume";
+const API_UPLOAD = "http://127.0.0.1:8000/upload-resume";
+const API_CHAT = "http://127.0.0.1:8000/chat";
 
-// Grab elements safely
-function el(id) {
-  const node = document.getElementById(id);
-  if (!node) throw new Error(`Missing element with id="${id}" in index.html`);
-  return node;
+// --------- elements ----------
+const formEl = document.getElementById("resume-form");
+const analyzeBtn = document.getElementById("analyze-btn");
+
+const statusEl = document.getElementById("status");
+const scoreEl = document.getElementById("score");
+const roleOutEl = document.getElementById("roleOut");
+const skillsEl = document.getElementById("skills");
+const previewEl = document.getElementById("preview");
+
+const chatLogEl = document.getElementById("chatLog");
+const chatInputEl = document.getElementById("chatInput");
+const sendChatBtn = document.getElementById("sendChat");
+
+// track if analysis is done
+let analyzedOnce = false;
+
+function setStatus(text) {
+  statusEl.textContent = text;
 }
 
-const statusEl = el("status");
-const scoreEl = el("score");
-const roleOutEl = el("roleOut");
-const skillsEl = el("skills");
-const previewEl = el("preview");
-const formEl = el("resume-form");
-const btnEl = el("analyze-btn");
+function appendChat(sender, text) {
+  const wrap = document.createElement("div");
+  wrap.style.marginBottom = "10px";
 
-async function analyze() {
-  console.log("🟦 Analyze clicked");
+  const who = document.createElement("div");
+  who.style.fontWeight = "700";
+  who.style.marginBottom = "4px";
+  who.textContent = sender;
 
-  const fileInput = el("resume-file");
-  const roleSelect = el("job-role");
-  const jdText = el("job-desc");
+  const msg = document.createElement("div");
+  msg.style.whiteSpace = "pre-wrap";
+  msg.textContent = text;
 
-  const file = fileInput.files[0];
-  const jobRole = roleSelect.value;
-  const jobDesc = jdText.value;
+  wrap.appendChild(who);
+  wrap.appendChild(msg);
+
+  chatLogEl.appendChild(wrap);
+  chatLogEl.scrollTop = chatLogEl.scrollHeight;
+}
+
+// prevent page reload if user presses Enter in the form
+formEl.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
+
+async function analyzeResume() {
+  const file = document.getElementById("resume-file").files[0];
+  const jobRole = document.getElementById("job-role").value;
+  const jobDesc = document.getElementById("job-desc").value;
 
   if (!file) {
-    statusEl.textContent = "Please choose a resume file.";
-    console.warn("⚠️ No file selected");
+    setStatus("Please choose a resume file.");
     return;
   }
-
   if (!jobDesc.trim()) {
-    statusEl.textContent = "Please paste a job description.";
-    console.warn("⚠️ Job description empty");
+    setStatus("Please paste the job description.");
     return;
   }
 
-  statusEl.textContent = "Analyzing...";
-  console.log("📦 Sending:", { filename: file.name, jobRole, jdLen: jobDesc.length });
+  setStatus("Analyzing...");
 
   const fd = new FormData();
   fd.append("file", file);
@@ -49,43 +71,85 @@ async function analyze() {
   fd.append("job_description", jobDesc);
 
   try {
-    const res = await fetch(API_URL, { method: "POST", body: fd });
+    const res = await fetch(API_UPLOAD, {
+      method: "POST",
+      body: fd,
+    });
 
-    console.log("🟩 Response status:", res.status);
+    const contentType = res.headers.get("content-type") || "";
+    const data = contentType.includes("application/json")
+      ? await res.json()
+      : { detail: await res.text() };
 
-    const text = await res.text(); // read raw first (best for debugging)
-    console.log("📨 Raw response:", text);
+    if (!res.ok) throw new Error(data.detail || `Request failed (${res.status})`);
 
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      throw new Error("Backend did not return JSON. Check backend response in terminal.");
-    }
-
-    if (!res.ok) {
-      throw new Error(data.detail || `Request failed (${res.status})`);
-    }
-
-    // Update UI
-    scoreEl.textContent = `${data.score}/10`;
+    // update UI
+    scoreEl.textContent = `${data.score} / 10`;
     roleOutEl.textContent = (data.job_role || "-").replaceAll("_", " ");
     skillsEl.textContent = (data.required_skills || []).join(", ") || "-";
     previewEl.textContent = data.resume_preview || "";
 
-    statusEl.textContent = "Done ✅";
-    console.log("✅ UI updated successfully");
+    analyzedOnce = true;
+    setStatus("Done ✅");
+
+    // helpful chat hint
+    chatLogEl.innerHTML = "";
+    appendChat("System", "Analysis saved. Now you can ask questions in the chatbot.");
   } catch (err) {
-    console.error("❌ Analyze failed:", err);
-    statusEl.textContent = "Error: " + err.message;
+    console.error(err);
+    setStatus("Error: " + err.message);
   }
 }
 
-// Button click
-btnEl.addEventListener("click", analyze);
+analyzeBtn.addEventListener("click", analyzeResume);
 
-// Safety: prevent form submit refresh if user presses Enter
-formEl.addEventListener("submit", (e) => {
-  e.preventDefault();
-  analyze();
+// --------- Chat ----------
+async function sendChat() {
+  const question = (chatInputEl.value || "").trim();
+
+  if (!analyzedOnce) {
+    appendChat("System", "Please click Analyze first, then ask questions.");
+    return;
+  }
+
+  if (!question) return;
+
+  appendChat("You", question);
+  chatInputEl.value = "";
+
+  const fd = new FormData();
+  fd.append("message", question);
+
+  try {
+    sendChatBtn.disabled = true;
+
+    const res = await fetch(API_CHAT, {
+      method: "POST",
+      body: fd
+    });
+
+    const contentType = res.headers.get("content-type") || "";
+    const data = contentType.includes("application/json")
+      ? await res.json()
+      : { detail: await res.text() };
+
+    if (!res.ok) throw new Error(data.detail || `Chat failed (${res.status})`);
+
+    appendChat("Assistant", data.reply || "(no reply)");
+  } catch (err) {
+    console.error(err);
+    appendChat("System", "Error: " + err.message);
+  } finally {
+    sendChatBtn.disabled = false;
+  }
+}
+
+sendChatBtn.addEventListener("click", sendChat);
+
+// allow Enter to send message
+chatInputEl.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendChat();
+  }
 });
