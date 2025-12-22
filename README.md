@@ -14,7 +14,7 @@ Frontend (HTML/CSS/JS)
 │
 ├── Resume upload + job description
 │
-├── Chat Assistant (calls /chat endpoint)
+├── Chat Assistant (chat endpoint)
 │
 └──→ FastAPI Backend
      ├── /upload-resume → parses resume, scores match
