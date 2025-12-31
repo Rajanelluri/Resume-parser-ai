@@ -178,19 +178,8 @@ TF-IDF + Cosine Similarity
 
 Sentence embeddings (BERT)
 
-Multi-role selection
 
-Resume ranking (multiple uploads)
 
-Cloud deployment (Azure / AWS)
-
-Database integration
-
-👤 Author
-
-Rajan Elluri
-Cloud & Data Enthusiast
-📍 Canada
 
 GitHub:
 👉 https://github.com/Rajanelluri
@@ -205,12 +194,5 @@ ATS-style resume screening
 
 Practical NLP implementation
 
-Full-stack development skills
 
-Perfect for:
 
-Entry-level Cloud / Data roles
-
-AI / ML learning portfolios
-
-Interview demonstrations 
